@@ -1,0 +1,23 @@
+<div class="grid md:grid-cols-2 justify-between w-full"> 
+    <div class="w-full flex flex-col items-cente r md:pt-8">
+        <% if @current_cart&.cart_items&.any?%>
+            <h1 class= "text-5xl font-stark"> Your Cart </h1>
+            <p class="text-xl"> You have <%= @current_cart.cart_items.count %> items in the cart.</p>
+            <div class="max-w-2xl w-full flex flex-col gap-2">
+                <% @current_cart.products.each do |product| %>
+                    <%= image_tag(product.images.first, class: "max-w-2xl w-full h-full object-cover rounded-lg") if product.images.any? %> 
+                    <p class="p-2 bg-gray-200"> <%= product.name %> </p>
+                    <p class="p-2 bg-gray-200"> <%= number_to_currency product.price %> </p>
+
+                <% end %>
+            </div>
+        <% else%>
+        <p class="text-xl"> You have no items in the cart.</p>
+        <%end%>
+    </div>
+
+    <% if @current_cart&.cart_items&.any?%>
+        <div data-controller="stripe-checkout" data-stripe-checkout-url-value="<%= stripe_session_cart_path(@current_cart.secret_id)%>">
+        </div>
+    <%end%>
+</div>

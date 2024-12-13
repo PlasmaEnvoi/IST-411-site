@@ -1,0 +1,10 @@
+<div id="add-to-cart" class="w-full flex">
+<%if @current_cart && @current_cart.products.where(id: @product.id).any? %>
+    <div class="text-center text-xl  rounded-lg p-4  mr-auto w-64 bg-pink-200 ">
+        Already in cart.
+    </div>
+<% else %>
+    <%= link_to "Add to Cart", cart_path(product_id: @product.id), class: "text-center text-xl  rounded-lg p-4  w-64 bg-pink-200 hover:bg-pink-300 transition-all duration-20",
+          data: {turbo_method: "post"}%>
+<%end%>
+</div>

@@ -1,0 +1,39 @@
+<div class="w-full flex flex-col items-center">
+    <div class="flex justify-between w-full items-center">
+        <div class="flex flex-col gap-4">
+            <h1 class="text-5xl"> Cart </h1>
+                <% if @current_cart&.cart_items&.any? %>
+                    <p> You have <%= @current_cart.cart_items.count %> items in your cart. </p>
+                    <% else %>
+                    <p class="text-lg"> You have no items in your cart yet. </p>
+                <%end%>
+        </div>
+            <% if @current_cart&.cart_items&.any? %>
+                <%= link_to "Checkout Now", checkout_cart_path, class: "text-center text-xl  rounded-lg p-4  w-64 bg-pink-300 hover:bg-pink-400 transition-all duration-20" %>
+            <% end %>
+
+        
+    </div>
+    <br/>
+
+    <div id="products" class="min-w-full grid md:grid-cols-4 gap-8 mt-4">
+        <% if @current_cart&.cart_items&.any? %>
+            <% @current_cart.products.each do |product| %>
+            <div class="grid grid-col mt-4">
+                <%= render "products/product", product: product %>
+                <div class="mt-4" >
+                <%= link_to "Remove From Cart", cart_path(@current_cart.secret_id, product_id: product.id), class: "p-2 rounded-lg bg-red-300 hover:bg-red-600 transition-all duration-20",
+                data: {turbo_method: "delete"}%>
+                </div> 
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+
+    <br/>
+
+    <div>
+        <%= link_to "Sign in to save your cart.", new_user_session_path, class:"text-2xl text-gray-50 border-b-2 b-gray-50" if !current_user%>
+    </div>
+  
+</div>
